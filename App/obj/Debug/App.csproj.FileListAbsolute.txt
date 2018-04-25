@@ -1,0 +1,9 @@
+C:\Users\mwest\source\repos\IceCreamWPF\App\obj\Debug\App.csprojResolveAssemblyReference.cache
+C:\Users\mwest\source\repos\IceCreamWPF\App\obj\Debug\App.exe.config
+C:\Users\mwest\source\repos\IceCreamWPF\App\obj\Debug\MainWindow.g.cs
+C:\Users\mwest\source\repos\IceCreamWPF\App\obj\Debug\App.g.cs
+C:\Users\mwest\source\repos\IceCreamWPF\App\obj\Debug\App_MarkupCompile.cache
+C:\Users\mwest\source\repos\IceCreamWPF\App\obj\Debug\App_MarkupCompile.lref
+C:\Users\mwest\source\repos\IceCreamWPF\App\obj\Debug\Views\IceCreamListView.g.cs
+C:\Users\mwest\source\repos\IceCreamWPF\App\obj\Debug\Views\WelcomeView.g.cs
+C:\Users\mwest\source\repos\IceCreamWPF\App\obj\Debug\GeneratedInternalTypeHelper.g.cs

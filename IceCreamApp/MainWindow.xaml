@@ -1,0 +1,153 @@
+﻿<Window x:Class="IceCreamApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IceCreamApp"
+        xmlns:views="clr-namespace:IceCreamApp.Views"
+        xmlns:viewModels="clr-namespace:IceCreamApp.ViewModels"
+        mc:Ignorable="d"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        Title="MainWindow" Height="550" Width="825" Background="{StaticResource BBrush}">
+ 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock  x:Name="tbMessage" Grid.Row="0" 
+                    Text="{Binding Message, NotifyOnTargetUpdated=True}" 
+                    Opacity="0" 
+                    Width="60" 
+                    HorizontalAlignment="Center"
+                    FontSize="20"
+                    FontWeight="ExtraBold"
+                    Foreground="Blue">
+            <TextBlock.Triggers>
+                <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="tbMessage" 
+                                             Storyboard.TargetProperty="Opacity" To="1" BeginTime="0:0:0" Duration="0:0:1" />
+                            <DoubleAnimation Storyboard.TargetName="tbMessage" 
+                                             Storyboard.TargetProperty="Opacity" To="0" BeginTime="0:0:3" Duration="0:0:1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </TextBlock.Triggers>
+        </TextBlock>
+    <Grid Grid.Row="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+<!--        You can add user controls directly-->
+        <views:WelcomeView Grid.Row="0" ></views:WelcomeView>
+        
+
+        <ScrollViewer Grid.Row="1">
+<!--            You can add user controls by binding a content presenter to an object such as a ViewModel-->
+<!--            In App.xaml a DataTemplate knows to map a ViewModel to a particular View-->
+            <ContentPresenter  Content="{Binding MainWindowView}" >
+
+            </ContentPresenter>
+        </ScrollViewer>
+         
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+                <Button Command="{Binding AListCommand}" BorderBrush="Transparent" Template="{StaticResource ButtonControlTemplate}" >
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="List"  Height="15">
+                        <fa:ImageAwesome.Style>
+                            <Style TargetType="fa:ImageAwesome">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsListSelected}" Value="True">
+                                        <Setter Property="Foreground" Value="Black" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsListSelected}" Value="False">
+                                        <Setter Property="Foreground" Value="DeepSkyBlue" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </fa:ImageAwesome.Style>
+                    </fa:ImageAwesome>
+
+                    <TextBlock Margin="5,0,0,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsListSelected}" Value="True">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                        <TextBlock.Text>Store List</TextBlock.Text>
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+                <Button Command="{Binding AGridCommand}" HorizontalAlignment="Center" BorderBrush="Transparent"  Template="{StaticResource ButtonControlTemplate}">
+                <StackPanel  Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Table" Foreground="DeepSkyBlue" Height="15">
+                        <fa:ImageAwesome.Style>
+                            <Style TargetType="fa:ImageAwesome">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsTableSelected}" Value="True">
+                                        <Setter Property="Foreground" Value="Black" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsTableSelected}" Value="False">
+                                        <Setter Property="Foreground" Value="DeepSkyBlue" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </fa:ImageAwesome.Style>
+                    </fa:ImageAwesome>
+                    <TextBlock Margin="5,0,0,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsTableSelected}" Value="True">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                        <TextBlock.Text>Table</TextBlock.Text>
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+                <Button Command="{Binding ADetailCommand}" HorizontalAlignment="Right" BorderBrush="Transparent"  Template="{StaticResource ButtonControlTemplate}">
+                <StackPanel  Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="FileText" Foreground="DeepSkyBlue" Height="15">
+                        <fa:ImageAwesome.Style>
+                            <Style TargetType="fa:ImageAwesome">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsDetailSelected}" Value="True">
+                                        <Setter Property="Foreground" Value="Black" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsDetailSelected}" Value="False">
+                                        <Setter Property="Foreground" Value="DeepSkyBlue" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </fa:ImageAwesome.Style>
+                    </fa:ImageAwesome>
+                    <TextBlock Margin="5,0,0,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsDetailSelected}" Value="True">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                        <TextBlock.Text>Ice Cream Detail</TextBlock.Text>
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+    </Grid>
+</Window>

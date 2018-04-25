@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="IceCreamApp.Views.IceCream.IceCreamListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IceCreamApp.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+
+    <!-- Note: A list within a list in this application. I can be done but have to be careful.
+    You can also intercept the mouse scroll event at each list level. Probably not the best 
+    way of doing things, but is here to demonstrate that WPF elements can be nested, for good or ill! -->
+
+<!--    Note: virtualizing panels can be used when loading big lists for performance reasons.-->
+    <ListView SelectedItem="{Binding SelectedIceCream}"
+                      ItemsSource="{Binding IceCreams}"   
+                  AlternationCount="2" 
+                  VirtualizingStackPanel.IsVirtualizing="True" 
+                  VirtualizingStackPanel.VirtualizationMode="Recycling" >
+        <ListView.Resources>
+            <ContextMenu x:Key="ItemContextMenu">
+                <MenuItem Header="Edit Ice Cream"   
+                          Command="{Binding Path=DataContext.EditCommand,
+                            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"  
+                          Background="WhiteSmoke" />
+                <MenuItem Header="View Ice Cream"  
+                          Command="{Binding Path=DataContext.ViewDetailCommand,
+                            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"  
+                           Background="WhiteSmoke" />
+            </ContextMenu>
+        </ListView.Resources> 
+        <ListView.ItemTemplate> 
+            <DataTemplate>
+                <Grid 
+                    Width="{Binding Path=ActualWidth,
+                            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition> 
+                        <ColumnDefinition Width="25"></ColumnDefinition> 
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Column="0" Grid.Row="0">Flavor:</TextBlock>
+                    <TextBlock  Grid.Column="2" Grid.Row="0" Text="{Binding Name}"></TextBlock>
+
+                    <TextBlock Grid.Column="0" Grid.Row="1">Creation Cost:</TextBlock>
+                    <TextBlock  Grid.Column="2" Grid.Row="1" Text="{Binding CreationCost}"></TextBlock>
+ 
+<!--                    Note: you can do column spans or row spans-->
+                    <Image Width="100" Height="100" 
+                           Grid.Column="3" Grid.Row="0" Grid.RowSpan="3" 
+                           Source="{Binding Path=ImageLink, Converter={StaticResource ImageConverter}}"></Image>
+ 
+                </Grid>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+        <ListView.ItemContainerStyle>
+            <Style TargetType="{x:Type ListViewItem}" >
+                <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}" />
+            </Style>
+        </ListView.ItemContainerStyle>
+    </ListView>
+
+</UserControl>
+

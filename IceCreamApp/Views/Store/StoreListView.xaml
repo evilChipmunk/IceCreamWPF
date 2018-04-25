@@ -1,0 +1,87 @@
+﻿<UserControl x:Class="IceCreamApp.Views.Store.StoreListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IceCreamApp.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:iceCream="clr-namespace:IceCreamApp.Views.IceCream"
+             xmlns:store="clr-namespace:IceCreamApp.Views.Store"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+           <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}"/>
+            <!-- Note: another way to do this without async method <ei:CallMethodAction TargetObject="{Binding}" MethodName="LoadData"/>-->
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <StackPanel> 
+        <TextBlock>Right click on a store to get its context menu, or right click on an ice cream to see its context menu</TextBlock>
+ 
+<!--        Note: Bindings can be made async too-->
+        <ListView SelectedItem="{Binding SelectedStore}"
+              Width="{Binding Path=ActualWidth,
+                            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"  
+                      ItemsSource="{Binding Stores, IsAsync=True}"   
+                  AlternationCount="2" 
+                  VirtualizingStackPanel.IsVirtualizing="True" 
+                  VirtualizingStackPanel.VirtualizationMode="Recycling" >
+        <ListView.Resources>
+            <ContextMenu x:Key="ItemContextMenu">
+<!--                Note: This Command uses a parameter. The {Binding} here means that the Parameter is bound to the -->
+<!--                same item that the ListView Row is bound to (the list item, which in this case is one of the StoreViewModels)-->
+                <MenuItem Header="Edit Store"  
+                          Command="{Binding Path=DataContext.EditCommand,
+                            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}" 
+                          CommandParameter="{Binding}"
+                           Background="WhiteSmoke" />
+            </ContextMenu>
+        </ListView.Resources>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <Grid 
+                    Width="{Binding Path=ActualWidth,
+                            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"  >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <store:StoreView Grid.Column="0" Grid.Row="0" 
+                                     Width="{Binding Path=ActualWidth,
+                                     RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}" 
+                                     DataContext="{Binding}"></store:StoreView>
+
+                    <Expander Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"  Header="Show me the Ice Creams!"  Margin="5">
+
+                        <ScrollViewer Height="300"  VerticalScrollBarVisibility="Auto"  x:Name="innerScroll">
+                            <VirtualizingStackPanel>
+
+                                <iceCream:IceCreamListView   DataContext="{Binding }"></iceCream:IceCreamListView>
+
+                                <Expander Header="Extra Info"  Margin="5">
+                                    <TextBlock>Hi I'm expanded.. wasn't bound to some DataContext like a real control</TextBlock>
+                                </Expander>
+
+                            </VirtualizingStackPanel>
+                        </ScrollViewer>
+                    </Expander>
+                </Grid>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+        <ListView.ItemContainerStyle>
+            <Style TargetType="{x:Type ListViewItem}" >
+                <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}" /> 
+            </Style> 
+            </ListView.ItemContainerStyle>
+    </ListView>
+    </StackPanel>
+</UserControl>
+
