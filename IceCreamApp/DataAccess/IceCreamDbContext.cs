@@ -1,21 +1,36 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using IceCreamApp.Models;
 using IceCreamShop.Entities;
 
 namespace IceCreamApp.DataAccess
 {
+    public class MigrationsContextFactory : IDbContextFactory<IceCreamDbContext>
+    {
+        private readonly IAppConfiguration configurationRoot;
+
+        public MigrationsContextFactory()
+        {
+            this.configurationRoot = new AppConfiguration();
+        }
+        public IceCreamDbContext Create()
+        {
+            return new IceCreamDbContext(configurationRoot);
+        }
+    }
+
     public class IceCreamDbContext : DbContext
     {
         private IAppConfiguration _config;
 
-        public IceCreamDbContext()
-        {
-
-        }
-//        public IceCreamDbContext(IAppConfiguration configurationRoot) : base(configurationRoot.DefaultConnectionString)
+//        public IceCreamDbContext()
 //        {
-//            _config = configurationRoot; 
+//
 //        }
+        public IceCreamDbContext(IAppConfiguration configurationRoot) : base(configurationRoot.DefaultConnectionString)
+        {
+            _config = configurationRoot; 
+        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

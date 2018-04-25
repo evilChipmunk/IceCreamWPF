@@ -59,11 +59,11 @@ namespace IceCreamApp
 
             container.Register<IAppConfiguration, AppConfiguration>();
              
-//            container.Register(() => 
-//                new IceCreamDbContext( container.GetInstance<IAppConfiguration>())  
-//                , Lifestyle.Transient);
+            container.Register(() => 
+                new IceCreamDbContext( container.GetInstance<IAppConfiguration>())  
+                , Lifestyle.Transient);
 
-            container.Register(() => new IceCreamDbContext(), Lifestyle.Transient);
+        //   container.Register(() => new IceCreamDbContext(), Lifestyle.Transient);
             Registration registration = container.GetRegistration(typeof(IceCreamDbContext)).Registration;
 
             registration.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent,
